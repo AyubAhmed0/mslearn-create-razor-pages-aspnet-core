@@ -1,33 +1,60 @@
-using ContosoPizza.Data;
-using ContosoPizza.Services;
+// This file is the entry point of your ASP.NET Core application. 
+// It sets up the services (like database and Razor Pages), middleware (like routing and error handling),
+// and starts the application.
+using ContosoPizza.Data;  // Importing the namespace that contains the database context (PizzaContext).
+using ContosoPizza.Services;  // Importing the namespace that contains the business logic (PizzaService).
+using Microsoft.EntityFrameworkCore;  // Importing Entity Framework Core for database operations.
 
-using Microsoft.EntityFrameworkCore;
+var builder = WebApplication.CreateBuilder(args);  
+// Creates a web application builder to configure the app and its services.
 
-var builder = WebApplication.CreateBuilder(args);
+// =============================
+// Add services to the DI container
+// =============================
 
-// Add services to the container.
-builder.Services.AddRazorPages();
-builder.Services.AddDbContext<PizzaContext>(options =>
-    options.UseSqlite("Data Source=ContosoPizza.db"));
-builder.Services.AddScoped<PizzaService>();
+builder.Services.AddRazorPages();  
+// Registers Razor Pages, allowing the app to use .cshtml pages for the UI.
 
-var app = builder.Build();
+builder.Services.AddDbContext<PizzaContext>(options =>  
+    options.UseSqlite("Data Source=ContosoPizza.db"));  
+// Registers the database context (PizzaContext) and configures it to use SQLite with the specified database file.
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+builder.Services.AddScoped<PizzaService>();  
+// Registers PizzaService with "scoped" lifetime:
+// - A new instance is created per HTTP request
+// - It ensures efficient use of database operations
+
+var app = builder.Build();  
+// Builds the application with the configured services.
+
+// =============================
+// Configure the HTTP request pipeline
+// =============================
+
+if (!app.Environment.IsDevelopment())  
 {
-    app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseExceptionHandler("/Error");  
+    // In production mode, errors are handled by redirecting to the "/Error" page.
+
+    app.UseHsts();  
+    // Enables HTTP Strict Transport Security (HSTS) to enforce secure connections (HTTPS).
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseHttpsRedirection();  
+// Redirects all HTTP requests to HTTPS for security.
 
-app.UseRouting();
+app.UseStaticFiles();  
+// Enables serving static files (CSS, JavaScript, images, etc.) from the wwwroot folder.
 
-app.UseAuthorization();
+app.UseRouting();  
+// Enables request routing, which determines how URLs map to pages.
 
-app.MapRazorPages();
+app.UseAuthorization();  
+// Enables authorization middleware (though no specific rules are defined yet).
 
-app.Run();
+app.MapRazorPages();  
+// Maps Razor Pages so that users can access them via URLs.
+
+app.Run();  
+// Starts the web application and begins listening for incoming requests.
+

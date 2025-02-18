@@ -1,11 +1,23 @@
 ﻿@page
-@model IndexModel
+<!-- Index.cshtml : Handles the presentation (what the user sees) 
+ and uses model to access the logic/data from the PageModel (IndexModel).
+ -->
+
+@* The @page directive defines this file as a Razor Page, which means it will handle HTTP requests and can be routed directly. *@
+
+@model IndexModel  
+@* The @model directive links this Razor page to the IndexModel class (PageModel) in the backend code, allowing access to its properties and methods. *@
 @{
-    ViewData["Title"] = "The Home for Pizza Lovers";
-TimeSpan timeInBusiness = DateTime.Now - new DateTime(2018, 8, 14);
+    ViewData["Title"] = "The Home for Pizza Lovers";  @* Setting the page title dynamically using ViewData. This data can be accessed in the layout or anywhere else on the page. *@
+    TimeSpan timeInBusiness = DateTime.Now - new DateTime(2018, 8, 14);  @* Calculating the number of days Contoso Pizza has been in business. It subtracts the current date from the business start date. *@
 }
 
+@* The main content of the page. This HTML displays a welcome message and the number of days in business. *@
 <div class="text-center">
-    <h1 class="display-4">Welcome to Contoso Pizza</h1>
-    <p class="lead">The best pizza in town for @Convert.ToInt32(timeInBusiness.TotalDays) days!</p>
+    <h1 class="display-4">Welcome to Contoso Pizza</h1>  @* Displaying the main heading of the page. *@
+    <p class="lead">The best pizza in town for @Convert.ToInt32(timeInBusiness.TotalDays) days!</p>  @* Displaying a dynamic message that includes the number of days Contoso Pizza has been open. *@
 </div>
+
+
+
+
